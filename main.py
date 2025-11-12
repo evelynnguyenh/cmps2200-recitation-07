@@ -10,15 +10,13 @@ def make_undirected_graph(edge_list):
 
 
 def reachable(graph, start_node):
-    """
-    Returns:
-      the set of nodes reachable from start_node
-    """
+
     result = set([start_node])
     frontier = set([start_node])
     while len(frontier) != 0:
-        ###TODO
-        pass
+        node = frontier.pop()
+        result.add(node)
+    frontier.update(graph[node] - result)
     return result
 
 
@@ -26,17 +24,22 @@ def reachable(graph, start_node):
 
 
 def connected(graph):
-    ### TODO
-    pass
+    nodes = set(graph.keys())
+    start_node = next(iter(nodes))
+    return reachable(graph, start_node) == nodes
 
 
 
 
 def n_components(graph):
-    """
-    Returns:
-      the number of connected components in an undirected graph
-    """
-    ### TODO
-    pass
+    nodes = set(graph.keys())
+    visited = set()
+    count = 0
+
+    for node in nodes:
+        if node not in visited:
+            component = reachable(graph, node)
+            visited.update(component)
+            count += 1
+    return count
 
